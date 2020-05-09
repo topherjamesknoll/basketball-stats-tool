@@ -13,7 +13,7 @@ def clean_data():
             stats['experience'] = False
         height = ""
         for letter in player['height']:
-            if letter == "0" or letter == "1" or letter == "2" or letter == "3" or letter == "4" or letter == "5" or letter == "6" or letter == "7" or letter == "8" or letter == "9":
+            if letter in "0123456789":
                 height = height + letter
         stats['height'] = int(height)
         players.append(stats)
@@ -27,38 +27,44 @@ def balance_teams(team):
                 print(constants.PLAYERS[player_number]['name'])
             player_number += 1
 
-clean_data()
+if __name__ == "__main__":
 
-print("BASKETBALL TEAM STATS TOOL\n")
-print("---- MENU ----\n")
-print("Here are your choices")
-print("1) Display Team Stats")
-print("2) Quit\n")
-while True:
-    try:
-        option = int(input("Enter an option > "))
-        if option != 1 and option != 2:
-            raise ValueError
-    except:
-        print("That is not a valid entry")
-    else:
-        break
-if option == 1:
-    print("")
+    clean_data()
+
+    print("BASKETBALL TEAM STATS TOOL\n")
+    print("---- MENU ----\n")
+    print("Here are your choices")
+    print("1) Display Team Stats")
+    print("2) Quit\n")
     while True:
-        for x in range(len(constants.TEAMS)):
-            print(f"{x + 1}) {constants.TEAMS[x]}")
         try:
-            option = int(input("\nEnter an option > "))
+            option = int(input("Enter an option > "))
+            if option != 1 and option != 2:
+                raise ValueError
         except:
             print("That is not a valid entry")
         else:
             break
-    option -= 1
-    print(f"\nTeam: {constants.TEAMS[option]} Stats")
-    print("--------------------")
-    print("Total Players: ", int(len(constants.PLAYERS) / len(constants.TEAMS)), "\n")
-    print("Players on Team:\n")
-    balance_teams(option)
-elif option == 2:
-    print("Goodbye!")
+    if option == 1:
+        print("")
+        while True:
+            counter = 0
+            while counter < len(constants.TEAMS):
+                print(f"{counter + 1}) {constants.TEAMS[counter]}")
+                counter += 1
+            try:
+                option = int(input("\nEnter an option > "))
+                if option < 1 or option > counter:
+                    raise ValueError
+            except:
+                print("That is not a valid entry")
+            else:
+                break
+        option -= 1
+        print(f"\nTeam: {constants.TEAMS[option]} Stats")
+        print("--------------------")
+        print("Total Players: ", int(len(constants.PLAYERS) / len(constants.TEAMS)), "\n")
+        print("Players on Team:\n")
+        balance_teams(option)
+    elif option == 2:
+        print("Goodbye!")
